@@ -1,14 +1,16 @@
 package me.beeman.beanbot.commands;
 
 import me.beeman.beanbot.Main;
+import me.beeman.beanbot.commands.beansubcommands.Dev;
+import me.beeman.beanbot.commands.beansubcommands.Game;
 import me.beeman.beanbot.commands.beansubcommands.Play;
+import me.beeman.beanbot.utils.SimpleEmbedBuilder;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Created by brand on 1/13/2020.
@@ -20,6 +22,8 @@ public class BeanCommand extends ListenerAdapter {
     public BeanCommand() {
         this.subCMDS = new HashMap<String, SubCommand>();
         subCMDS.put("play", new Play());
+        subCMDS.put("dev", new Dev());
+        subCMDS.put("game", new Game());
     }
 
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
@@ -35,16 +39,7 @@ public class BeanCommand extends ListenerAdapter {
         }
 
         if (args[1].equalsIgnoreCase("help") || args[1].equalsIgnoreCase("info")) {
-            EmbedBuilder info = new EmbedBuilder();
-            info.setTitle("BEAN BOT INFO");
-            info.setDescription("Info relating to the extremely helpful and practical beanbot!");
-            info.addField("Creator:", "Beeman", false); //Last boolean determines if its inline or not
-            info.setColor(0xcc6600);
-            info.setFooter("U look lame", event.getMember().getUser().getAvatarUrl());
-
-            event.getChannel().sendTyping().queue();
-            event.getChannel().sendMessage(info.build()).queue();
-            info.clear(); //Saves system resources
+            sendHelpMsg(event);
             return;
         }
 
@@ -61,5 +56,17 @@ public class BeanCommand extends ListenerAdapter {
         } catch (Exception e) {
             System.out.println("Implement error message system!!! - Failed to run subcommand");
         }
+    }
+
+    private void sendHelpMsg(GuildMessageReceivedEvent event) {
+        SimpleEmbedBuilder simpleEmbedBuilder = new SimpleEmbedBuilder(event.getChannel());
+
+        HashMap<String, String> cmdHelpList = new HashMap<String, String>();
+
+        for (String subCmd : subCMDS.keySet()) {
+            cmdHelpList.put(subCmd, subCMDS.get(subCmd).returnHelpMsg());
+        }
+
+        simpleEmbedBuilder.sendHelpMessage("BeanBot","Note: each sub-command has an additional help menu you can access by typing bean: {cmd} help", cmdHelpList, true);
     }
 }

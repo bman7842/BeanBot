@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 import javax.security.auth.login.LoginException;
 
@@ -15,11 +16,16 @@ import javax.security.auth.login.LoginException;
 public class Main {
     public static String prefix = "bean:";
 
-    public static void main(String[] args) throws LoginException {
-        JDA jda = new JDABuilder(AccountType.BOT).setToken("NjY2NDMxMzA3ODU2NzQwMzcz.Xh0H5Q.S5MDapjWwZwG2JIu9wHEMhS1l4c").build();
-        jda.getPresence().setStatus(OnlineStatus.IDLE);
-        jda.getPresence().setActivity(Activity.listening("Zane's queef"));
+    //TextChannel
 
-        jda.addEventListener(new BeanCommand());
+    public static void main(String[] args) throws LoginException {
+        JDA jda = new JDABuilder(AccountType.BOT)
+                .setToken("NjY5Njg4NTQ4ODQ0MzcxOTY5.XoKwjg.GSt6DSCoUPFkhMUTOcDWdOI8ipE")
+                .addEventListeners(new BeanCommand())
+                .setStatus(OnlineStatus.IDLE)
+                .setActivity(Activity.listening("Gamer chatter"))
+                .build();
     }
+
+
 }

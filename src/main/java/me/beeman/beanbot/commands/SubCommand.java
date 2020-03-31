@@ -1,11 +1,14 @@
 package me.beeman.beanbot.commands;
 
+import me.beeman.beanbot.utils.SimpleEmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 /**
  * Created by brand on 1/13/2020.
  */
 public interface SubCommand {
+
+    String returnHelpMsg();
 
     /**
      * @param event Reference to the instance of GuildMessageReceivedEvent
@@ -16,7 +19,5 @@ public interface SubCommand {
     /**
      * the info for a specific subcommand
      */
-    default void sendSubCommandHelp() {
-        //Build a blank subcommand help screen
-    }
+    void sendSubCommandHelp(GuildMessageReceivedEvent event);
 }
